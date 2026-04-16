@@ -16,7 +16,7 @@ function LiveClock() {
       style={{
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: 15,
-        color: '#00D4AA',
+        color: '#1D4ED8',
         letterSpacing: '0.08em',
         minWidth: 80,
         display: 'inline-block',
@@ -32,13 +32,14 @@ export default function Header() {
   return (
     <header
       style={{
-        background: 'rgba(10,14,26,0.95)',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        background: 'rgba(255,255,255,0.96)',
+        borderBottom: '1px solid #DBEAFE',
         backdropFilter: 'blur(12px)',
         position: 'sticky',
         top: 0,
         zIndex: 50,
         padding: '14px 28px',
+        boxShadow: '0 1px 8px rgba(37,99,235,.08)',
       }}
     >
       <div
@@ -54,20 +55,19 @@ export default function Header() {
       >
         {/* Logo + Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          {/* Diamond icon */}
           <div
             style={{
               width: 42,
               height: 42,
-              background: 'linear-gradient(135deg, #00D4AA, #0096FF)',
+              background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
               borderRadius: 8,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 22,
               fontWeight: 900,
-              color: '#0A0E1A',
-              boxShadow: '0 0 20px rgba(0,212,170,0.35)',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 16px rgba(37,99,235,.35)',
               transform: 'rotate(45deg)',
               flexShrink: 0,
             }}
@@ -79,7 +79,7 @@ export default function Header() {
               style={{
                 fontWeight: 800,
                 fontSize: 20,
-                color: '#E8EDF5',
+                color: '#0F172A',
                 letterSpacing: '0.04em',
                 lineHeight: 1.2,
               }}
@@ -89,7 +89,7 @@ export default function Header() {
             <div
               style={{
                 fontSize: 11,
-                color: '#8A95A8',
+                color: '#64748B',
                 letterSpacing: '0.02em',
                 marginTop: 2,
               }}
@@ -124,17 +124,17 @@ export default function Header() {
           }}
         >
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontWeight: 700, fontSize: 13, color: '#E8EDF5' }}>
+            <div style={{ fontWeight: 700, fontSize: 13, color: '#0F172A' }}>
               Team CipherGuard
             </div>
-            <div style={{ fontSize: 11, color: '#4A9EFF', marginTop: 2 }}>
+            <div style={{ fontSize: 11, color: '#2563EB', marginTop: 2 }}>
               PSB Hackathon 2026
             </div>
           </div>
           <div
             style={{
-              background: 'rgba(0,212,170,0.08)',
-              border: '1px solid rgba(0,212,170,0.2)',
+              background: '#EFF6FF',
+              border: '1px solid #BFDBFE',
               borderRadius: 8,
               padding: '6px 14px',
             }}

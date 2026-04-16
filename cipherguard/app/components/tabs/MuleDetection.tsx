@@ -2,13 +2,14 @@
 import { useState } from 'react';
 import { useAppState } from '../../lib/state';
 import { randomHex, randInt, caseId } from '../../lib/utils';
+import PipelineVisualization, { type PipelineInputs } from '../PipelineVisualization';
 
 const BANKS = [
-  { name: 'SBI',    color: '#00D4AA', cx: 280, cy: 80  },
-  { name: 'HDFC',   color: '#4A9EFF', cx: 480, cy: 160 },
-  { name: 'ICICI',  color: '#9B6DFF', cx: 440, cy: 360 },
-  { name: 'Kotak',  color: '#FF9F1C', cx: 120, cy: 360 },
-  { name: 'PNB',    color: '#FF3B5C', cx: 80,  cy: 160 },
+  { name: 'SBI',    color: '#2563EB', cx: 280, cy: 80  },
+  { name: 'HDFC',   color: '#3B82F6', cx: 480, cy: 160 },
+  { name: 'ICICI',  color: '#7C3AED', cx: 440, cy: 360 },
+  { name: 'Kotak',  color: '#0891B2', cx: 120, cy: 360 },
+  { name: 'PNB',    color: '#D97706', cx: 80,  cy: 160 },
 ];
 const CENTER = { cx: 280, cy: 228 };
 const DEVICE_HASH = `a3f7c91b${randomHex(8)}`;
@@ -34,10 +35,10 @@ function NetworkSVG({
             key={i}
             x1={CENTER.cx} y1={CENTER.cy}
             x2={b.cx} y2={b.cy}
-            stroke={blocked ? '#FF3B5C' : active ? b.color : 'rgba(255,255,255,0.08)'}
+            stroke={blocked ? '#EF4444' : active ? b.color : '#E2E8F0'}
             strokeWidth={blocked ? 2.5 : active ? 2 : 1}
             strokeDasharray={active ? undefined : '6 4'}
-            opacity={active ? 1 : 0.4}
+            opacity={active ? 1 : 0.5}
             style={active ? {
               strokeDasharray: '200',
               strokeDashoffset: '200',
@@ -52,14 +53,14 @@ function NetworkSVG({
         x={CENTER.cx - 52} y={CENTER.cy - 22}
         width={104} height={44}
         rx={8}
-        fill={muleTriggered ? 'rgba(255,59,92,0.15)' : 'rgba(0,212,170,0.12)'}
-        stroke={muleTriggered ? '#FF3B5C' : '#00D4AA'}
+        fill={muleTriggered ? '#FEE2E2' : '#EFF6FF'}
+        stroke={muleTriggered ? '#EF4444' : '#2563EB'}
         strokeWidth={1.5}
       />
       <text
         x={CENTER.cx} y={CENTER.cy - 5}
         textAnchor="middle"
-        fill={muleTriggered ? '#FF3B5C' : '#00D4AA'}
+        fill={muleTriggered ? '#DC2626' : '#1D4ED8'}
         fontSize={9.5}
         fontWeight="700"
         fontFamily="DM Sans, system-ui"
@@ -69,7 +70,7 @@ function NetworkSVG({
       <text
         x={CENTER.cx} y={CENTER.cy + 9}
         textAnchor="middle"
-        fill={muleTriggered ? '#FF3B5C' : '#8A95A8'}
+        fill={muleTriggered ? '#DC2626' : '#64748B'}
         fontSize={8.5}
         fontFamily="DM Sans, system-ui"
       >
@@ -84,15 +85,15 @@ function NetworkSVG({
           <g key={i} className={active ? 'node-pop' : undefined}>
             <circle
               cx={b.cx} cy={b.cy} r={22}
-              fill={active ? (blocked ? 'rgba(255,59,92,0.15)' : `${b.color}18`) : 'rgba(255,255,255,0.04)'}
-              stroke={active ? (blocked ? '#FF3B5C' : b.color) : 'rgba(255,255,255,0.1)'}
+              fill={active ? (blocked ? '#FEE2E2' : '#EFF6FF') : '#F8FAFF'}
+              stroke={active ? (blocked ? '#EF4444' : b.color) : '#E2E8F0'}
               strokeWidth={active ? 2 : 1}
-              opacity={active ? 1 : 0.5}
+              opacity={active ? 1 : 0.6}
             />
             <text
               x={b.cx} y={b.cy + 4}
               textAnchor="middle"
-              fill={active ? (blocked ? '#FF3B5C' : b.color) : '#4A5568'}
+              fill={active ? (blocked ? '#DC2626' : b.color) : '#94A3B8'}
               fontSize={10}
               fontWeight="700"
               fontFamily="DM Sans, system-ui"
@@ -101,22 +102,21 @@ function NetworkSVG({
             </text>
             {active && !blocked && (
               <circle cx={b.cx + 14} cy={b.cy - 14} r={5}
-                fill="#00D4AA" opacity={0.9} />
+                fill="#059669" opacity={0.9} />
             )}
             {blocked && (
               <>
                 <line x1={b.cx - 8} y1={b.cy - 8} x2={b.cx + 8} y2={b.cy + 8}
-                  stroke="#FF3B5C" strokeWidth={2.5} />
+                  stroke="#EF4444" strokeWidth={2.5} />
                 <line x1={b.cx + 8} y1={b.cy - 8} x2={b.cx - 8} y2={b.cy + 8}
-                  stroke="#FF3B5C" strokeWidth={2.5} />
+                  stroke="#EF4444" strokeWidth={2.5} />
               </>
             )}
-            {/* Label below */}
             {active && (
               <text
                 x={b.cx} y={b.cy + 36}
                 textAnchor="middle"
-                fill={blocked ? '#FF3B5C' : '#8A95A8'}
+                fill={blocked ? '#EF4444' : '#64748B'}
                 fontSize={9}
                 fontFamily="DM Sans, system-ui"
               >
@@ -137,9 +137,19 @@ export default function MuleDetection() {
   const [scanning,       setScanning]       = useState(false);
   const [muleTriggered,  setMuleTriggered]  = useState(false);
   const [logLines,       setLogLines]       = useState<Array<{ text: string; color: string }>>([
-    { text: 'MuleDetector.sol listening on consortium event bus...', color: '#8A95A8' },
-    { text: `REGISTRATION: device_hash ${DEVICE_HASH.substring(0, 12)}... @ SBI (node 1)`, color: '#00D4AA' },
+    { text: 'MuleDetector.sol listening on consortium event bus...', color: '#94A3B8' },
+    { text: `REGISTRATION: device_hash ${DEVICE_HASH.substring(0, 12)}... @ SBI (node 1)`, color: '#2563EB' },
   ]);
+
+  const [pipelineTrigger, setPipelineTrigger] = useState(0);
+
+  const pipelineInputs: PipelineInputs = {
+    scenario: 'mule',
+    victimImei: '490154203237518',
+    customerId: 'CUST_884712',
+    bank: 'SBI',
+    amountBand: 'HIGH',
+  };
 
   const handleAddBank = () => {
     if (activeBanks >= BANKS.length || scanning || muleTriggered) return;
@@ -157,7 +167,7 @@ export default function MuleDetection() {
       setLogLines(prev => [...prev,
         {
           text: `⚠️ MuleDetector threshold reached (≥3 banks in 48h window) — SCAN AVAILABLE`,
-          color: '#FF9F1C',
+          color: '#D97706',
         },
       ]);
     }
@@ -166,23 +176,24 @@ export default function MuleDetection() {
   const handleScan = async () => {
     if (scanning || activeBanks < 3 || muleTriggered) return;
     setScanning(true);
+    setPipelineTrigger(t => t + 1);
 
     const scanLines: Array<{ ms: number; text: string; color: string }> = [
-      { ms: 0,   text: 'MuleDetector.sol: initiating 48-hour sliding window scan...', color: '#4A9EFF' },
-      { ms: 180, text: 'Scanning consortium ledger for duplicate device_hash entries...', color: '#8A95A8' },
-      { ms: 420, text: `⚡ ALERT: device_hash ${DEVICE_HASH.substring(0, 12)}... found at ${activeBanks} distinct bank nodes`, color: '#FF3B5C' },
-      { ms: 450, text: 'Timestamp analysis: all registrations within 48-hour window: CONFIRMED', color: '#FF9F1C' },
-      { ms: 470, text: `Threshold exceeded (≥3 banks) — MULE_DEVICE_ALERT emitting...`, color: '#FF3B5C' },
-      { ms: 490, text: `Broadcasting to all ${activeBanks} consortium members via event bus...`, color: '#8A95A8' },
+      { ms: 0,   text: 'MuleDetector.sol: initiating 48-hour sliding window scan...', color: '#3B82F6' },
+      { ms: 180, text: 'Scanning consortium ledger for duplicate device_hash entries...', color: '#94A3B8' },
+      { ms: 420, text: `⚡ ALERT: device_hash ${DEVICE_HASH.substring(0, 12)}... found at ${activeBanks} distinct bank nodes`, color: '#DC2626' },
+      { ms: 450, text: 'Timestamp analysis: all registrations within 48-hour window: CONFIRMED', color: '#D97706' },
+      { ms: 470, text: `Threshold exceeded (≥3 banks) — MULE_DEVICE_ALERT emitting...`, color: '#DC2626' },
+      { ms: 490, text: `Broadcasting to all ${activeBanks} consortium members via event bus...`, color: '#94A3B8' },
       ...BANKS.slice(0, activeBanks).map((b, i) => ({
         ms: 510 + i * 10,
         text: `Webhook → ${b.name} fraud team: DELIVERED ✓`,
-        color: '#4A9EFF',
+        color: '#3B82F6',
       })),
-      { ms: 560, text: `Hash ${DEVICE_HASH.substring(0, 12)}... added to consortium shared blocklist`, color: '#FF3B5C' },
-      { ms: 580, text: 'All future TRANSACTION_INIT for this device_hash: AUTO-BLOCK', color: '#FF3B5C' },
-      { ms: 600, text: 'Existing accounts linked to this hash: FLAGGED for review', color: '#FF9F1C' },
-      { ms: 620, text: `✓ MULE DEVICE NETWORK NEUTRALIZED — ${activeBanks} banks protected`, color: '#00D4AA' },
+      { ms: 560, text: `Hash ${DEVICE_HASH.substring(0, 12)}... added to consortium shared blocklist`, color: '#DC2626' },
+      { ms: 580, text: 'All future TRANSACTION_INIT for this device_hash: AUTO-BLOCK', color: '#DC2626' },
+      { ms: 600, text: 'Existing accounts linked to this hash: FLAGGED for review', color: '#D97706' },
+      { ms: 620, text: `✓ MULE DEVICE NETWORK NEUTRALIZED — ${activeBanks} banks protected`, color: '#059669' },
     ];
 
     for (const line of scanLines) {
@@ -203,10 +214,10 @@ export default function MuleDetection() {
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#E8EDF5', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>
           🕸️ Cross-Bank Mule Detection
         </h2>
-        <p style={{ color: '#8A95A8', fontSize: 14 }}>
+        <p style={{ color: '#64748B', fontSize: 14 }}>
           Consortium-wide pseudonymous device registry. Closes G5 — cross-bank visibility gap.
           A fraud ring invisible to any single institution becomes visible across all.
         </p>
@@ -222,7 +233,7 @@ export default function MuleDetection() {
               alignItems: 'center',
               marginBottom: 12,
             }}>
-              <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15 }}>
+              <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15 }}>
                 Consortium Network
               </div>
               <div style={{
@@ -230,11 +241,9 @@ export default function MuleDetection() {
                 borderRadius: 6,
                 fontSize: 12,
                 fontWeight: 700,
-                background: activeBanks >= 3
-                  ? 'rgba(255,59,92,.15)'
-                  : 'rgba(0,212,170,.1)',
-                color: activeBanks >= 3 ? '#FF3B5C' : '#00D4AA',
-                border: `1px solid ${activeBanks >= 3 ? 'rgba(255,59,92,.3)' : 'rgba(0,212,170,.3)'}`,
+                background: activeBanks >= 3 ? '#FEE2E2' : '#EFF6FF',
+                color: activeBanks >= 3 ? '#DC2626' : '#1D4ED8',
+                border: `1px solid ${activeBanks >= 3 ? '#FCA5A5' : '#BFDBFE'}`,
               }}>
                 Same device @ {activeBanks} bank{activeBanks !== 1 ? 's' : ''}
               </div>
@@ -247,9 +256,9 @@ export default function MuleDetection() {
                 marginTop: 8,
                 padding: '8px 12px',
                 borderRadius: 8,
-                background: 'rgba(255,159,28,.1)',
-                border: '1px solid rgba(255,159,28,.3)',
-                color: '#FF9F1C',
+                background: '#FFFBEB',
+                border: '1px solid #FDE68A',
+                color: '#D97706',
                 fontSize: 12,
                 fontWeight: 700,
                 textAlign: 'center',
@@ -263,9 +272,9 @@ export default function MuleDetection() {
                 marginTop: 8,
                 padding: '8px 12px',
                 borderRadius: 8,
-                background: 'rgba(255,59,92,.1)',
-                border: '1px solid rgba(255,59,92,.3)',
-                color: '#FF3B5C',
+                background: '#FEE2E2',
+                border: '1px solid #FCA5A5',
+                color: '#DC2626',
                 fontSize: 12,
                 fontWeight: 700,
                 textAlign: 'center',
@@ -306,7 +315,7 @@ export default function MuleDetection() {
           {/* Result card */}
           {muleTriggered && (
             <div className="cg-card-danger fade-up" style={{ marginTop: 16 }}>
-              <div style={{ fontWeight: 800, color: '#FF3B5C', fontSize: 15, marginBottom: 14 }}>
+              <div style={{ fontWeight: 800, color: '#DC2626', fontSize: 15, marginBottom: 14 }}>
                 Mule Detection Result
               </div>
               {[
@@ -317,8 +326,8 @@ export default function MuleDetection() {
                 ['PII shared',         'NONE — coordination via pseudonymous hashes only'],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 12, gap: 8 }}>
-                  <span style={{ color: '#8A95A8', flexShrink: 0 }}>{k}:</span>
-                  <span style={{ color: '#E8EDF5', textAlign: 'right' }}>{v}</span>
+                  <span style={{ color: '#64748B', flexShrink: 0 }}>{k}:</span>
+                  <span style={{ color: '#0F172A', textAlign: 'right' }}>{v}</span>
                 </div>
               ))}
             </div>
@@ -334,13 +343,13 @@ export default function MuleDetection() {
               alignItems: 'center',
               marginBottom: 12,
             }}>
-              <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15 }}>
+              <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15 }}>
                 Consortium Event Bus
               </div>
               {scanning && (
                 <span style={{
                   fontSize: 11,
-                  color: '#FF9F1C',
+                  color: '#D97706',
                   fontFamily: "'JetBrains Mono', monospace",
                   animation: 'badge-pulse 1s ease-in-out infinite',
                 }}>
@@ -364,17 +373,20 @@ export default function MuleDetection() {
         </div>
       </div>
 
+      {/* Pipeline Visualization */}
+      <PipelineVisualization trigger={pipelineTrigger} inputs={pipelineInputs} />
+
       {/* Gap callout */}
       <div style={{
         marginTop: 24,
         padding: '14px 18px',
-        background: 'rgba(0,212,170,.05)',
-        border: '1px solid rgba(0,212,170,.15)',
+        background: '#EFF6FF',
+        border: '1px solid #BFDBFE',
         borderRadius: 10,
         fontSize: 13,
-        color: '#8A95A8',
+        color: '#475569',
       }}>
-        <span style={{ color: '#00D4AA', fontWeight: 700 }}>This closes G5 — Cross-Bank Visibility Gap.</span>{' '}
+        <span style={{ color: '#1D4ED8', fontWeight: 700 }}>This closes G5 — Cross-Bank Visibility Gap.</span>{' '}
         Before CipherGuard: a fraud ring using 5 different UPI apps across 5 banks was completely
         invisible to any single institution's model. Now: one hash mismatch anywhere → all banks
         notified within 5 minutes.

@@ -2,11 +2,11 @@
 import { useAppState } from '../../lib/state';
 
 const SIGNAL_WEIGHTS = [
-  { label: 'IMEI hash mismatch (L2)',  weight: 0.35, gap: 'G1, G2', color: '#FF3B5C', src: 'NEW — L2' },
-  { label: 'Telecom call volume (L3)',  weight: 0.20, gap: 'G3',     color: '#FF9F1C', src: 'NEW — L3' },
-  { label: 'ML ensemble (L5)',          weight: 0.20, gap: 'Existing',color: '#4A9EFF', src: 'EXISTING' },
-  { label: 'SIM ICCID change (L3)',     weight: 0.15, gap: 'G2',     color: '#9B6DFF', src: 'NEW — L3' },
-  { label: 'Cross-bank device (L2)',    weight: 0.10, gap: 'G5',     color: '#00D4AA', src: 'NEW — L2' },
+  { label: 'IMEI hash mismatch (L2)',  weight: 0.35, gap: 'G1, G2', color: '#EF4444', src: 'NEW — L2' },
+  { label: 'Telecom call volume (L3)',  weight: 0.20, gap: 'G3',     color: '#F59E0B', src: 'NEW — L3' },
+  { label: 'ML ensemble (L5)',          weight: 0.20, gap: 'Existing',color: '#2563EB', src: 'EXISTING' },
+  { label: 'SIM ICCID change (L3)',     weight: 0.15, gap: 'G2',     color: '#7C3AED', src: 'NEW — L3' },
+  { label: 'Cross-bank device (L2)',    weight: 0.10, gap: 'G5',     color: '#0891B2', src: 'NEW — L2' },
 ];
 
 const GAPS = [
@@ -62,12 +62,12 @@ const COMPETITORS = [
 
 function LogTypeColor(type: string) {
   switch (type) {
-    case 'approve':  return '#00D4AA';
-    case 'block':    return '#FF3B5C';
-    case 'stepup':   return '#FF9F1C';
-    case 'register': return '#4A9EFF';
-    case 'mule':     return '#9B6DFF';
-    default:         return '#8A95A8';
+    case 'approve':  return '#059669';
+    case 'block':    return '#DC2626';
+    case 'stepup':   return '#D97706';
+    case 'register': return '#2563EB';
+    case 'mule':     return '#7C3AED';
+    default:         return '#64748B';
   }
 }
 
@@ -76,7 +76,7 @@ function MetricCard({ label, value, sub, color }: {
 }) {
   return (
     <div className="metric-card">
-      <div style={{ fontSize: 11, color: '#8A95A8', fontWeight: 600, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: 11, color: '#64748B', fontWeight: 600, marginBottom: 6 }}>{label}</div>
       <div style={{
         fontSize: 32,
         fontWeight: 900,
@@ -87,7 +87,7 @@ function MetricCard({ label, value, sub, color }: {
       }}>
         {value}
       </div>
-      {sub && <div style={{ fontSize: 11, color: '#4A5568' }}>{sub}</div>}
+      {sub && <div style={{ fontSize: 11, color: '#94A3B8' }}>{sub}</div>}
     </div>
   );
 }
@@ -103,10 +103,10 @@ export default function LiveDashboard() {
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#E8EDF5', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: '#0F172A', marginBottom: 6 }}>
           📊 Live Operations Dashboard
         </h2>
-        <p style={{ color: '#8A95A8', fontSize: 14 }}>
+        <p style={{ color: '#64748B', fontSize: 14 }}>
           Real-time metrics from all scenario tabs. Run simulations in other tabs and watch
           this dashboard update automatically.
         </p>
@@ -114,13 +114,13 @@ export default function LiveDashboard() {
 
       {/* ── Row 1: Metric cards ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-        <MetricCard label="TRANSACTIONS PROCESSED" value={metrics.txn}    color="#4A9EFF" sub="all scenarios" />
-        <MetricCard label="FRAUD BLOCKED"           value={metrics.blocked} color="#FF3B5C" sub="BLOCK decisions" />
-        <MetricCard label="STEP-UPS TRIGGERED"      value={metrics.stepup}  color="#FF9F1C" sub="enhanced auth" />
+        <MetricCard label="TRANSACTIONS PROCESSED" value={metrics.txn}    color="#2563EB" sub="all scenarios" />
+        <MetricCard label="FRAUD BLOCKED"           value={metrics.blocked} color="#DC2626" sub="BLOCK decisions" />
+        <MetricCard label="STEP-UPS TRIGGERED"      value={metrics.stepup}  color="#D97706" sub="enhanced auth" />
         <MetricCard
           label="AVG LATENCY"
           value={avgLatency ? `${avgLatency}ms` : '—'}
-          color="#00D4AA"
+          color="#059669"
           sub="across all scenarios"
         />
       </div>
@@ -129,12 +129,12 @@ export default function LiveDashboard() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
         {/* Event feed */}
         <div className="cg-card">
-          <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 12 }}>
+          <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 12 }}>
             Real-Time Event Feed
           </div>
           <div className="log-terminal">
             {eventLog.length === 0 && (
-              <div style={{ color: '#4A5568', fontStyle: 'italic' }}>
+              <div style={{ color: '#475569', fontStyle: 'italic' }}>
                 Run scenarios in other tabs to populate this feed...
               </div>
             )}
@@ -142,7 +142,7 @@ export default function LiveDashboard() {
               <div key={e.id} className="stream-in" style={{ marginBottom: 4 }}>
                 <span style={{
                   fontFamily: "'JetBrains Mono', monospace",
-                  color: '#4A5568',
+                  color: '#475569',
                   fontSize: 10,
                   marginRight: 8,
                 }}>
@@ -156,17 +156,17 @@ export default function LiveDashboard() {
 
         {/* Signal weight matrix */}
         <div className="cg-card">
-          <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 16 }}>
+          <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 16 }}>
             Signal Weight Matrix
           </div>
           {SIGNAL_WEIGHTS.map(s => (
             <div key={s.label} style={{ marginBottom: 14 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: 12 }}>
-                <span style={{ color: '#E8EDF5' }}>{s.label}</span>
+                <span style={{ color: '#334155' }}>{s.label}</span>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   <span style={{
                     fontSize: 10, padding: '1px 7px', borderRadius: 10,
-                    background: 'rgba(74,158,255,.1)', color: '#4A9EFF', border: '1px solid rgba(74,158,255,.2)',
+                    background: '#EFF6FF', color: '#2563EB', border: '1px solid #BFDBFE',
                   }}>
                     {s.gap}
                   </span>
@@ -186,12 +186,12 @@ export default function LiveDashboard() {
 
           {/* Decision bands */}
           <div style={{ marginTop: 16 }}>
-            <div style={{ fontSize: 12, color: '#8A95A8', marginBottom: 6 }}>Decision Bands (0–1000):</div>
+            <div style={{ fontSize: 12, color: '#64748B', marginBottom: 6 }}>Decision Bands (0–1000):</div>
             <div style={{ display: 'flex', gap: 4 }}>
               {[
-                { label: '0–299  APPROVE', color: '#00D4AA', bg: 'rgba(0,212,170,.12)' },
-                { label: '300–599  STEP-UP', color: '#FF9F1C', bg: 'rgba(255,159,28,.12)' },
-                { label: '600–1000  BLOCK', color: '#FF3B5C', bg: 'rgba(255,59,92,.12)' },
+                { label: '0–299  APPROVE', color: '#059669', bg: '#DCFCE7' },
+                { label: '300–599  STEP-UP', color: '#D97706', bg: '#FEF9C3' },
+                { label: '600–1000  BLOCK', color: '#DC2626', bg: '#FEE2E2' },
               ].map(b => (
                 <div key={b.label} style={{
                   flex: b.label.includes('BLOCK') ? 4 : 3,
@@ -214,7 +214,7 @@ export default function LiveDashboard() {
 
       {/* ── Row 3: Gap closure tracker ── */}
       <div className="cg-card" style={{ marginBottom: 24 }}>
-        <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 16 }}>
+        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 16 }}>
           Gap Closure Tracker
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
@@ -224,7 +224,7 @@ export default function LiveDashboard() {
                 <span style={{
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 11,
-                  color: '#00D4AA',
+                  color: '#1D4ED8',
                   fontWeight: 700,
                 }}>
                   {g.id}
@@ -233,23 +233,23 @@ export default function LiveDashboard() {
                   fontSize: 10,
                   padding: '1px 7px',
                   borderRadius: 10,
-                  background: 'rgba(0,212,170,.15)',
-                  color: '#00D4AA',
-                  border: '1px solid rgba(0,212,170,.3)',
+                  background: '#DCFCE7',
+                  color: '#059669',
+                  border: '1px solid #86EFAC',
                   fontWeight: 700,
                 }}>
                   CLOSED ✓
                 </span>
               </div>
-              <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 13, marginBottom: 6 }}>{g.title}</div>
-              <div style={{ fontSize: 11, color: '#4A9EFF', marginBottom: 4 }}>Layer: {g.layer}</div>
-              <div style={{ fontSize: 11, color: '#8A95A8', marginBottom: 2 }}>
-                <span style={{ color: '#FF3B5C' }}>Before:</span> {g.before}
+              <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 13, marginBottom: 6 }}>{g.title}</div>
+              <div style={{ fontSize: 11, color: '#2563EB', marginBottom: 4 }}>Layer: {g.layer}</div>
+              <div style={{ fontSize: 11, color: '#64748B', marginBottom: 2 }}>
+                <span style={{ color: '#DC2626' }}>Before:</span> {g.before}
               </div>
-              <div style={{ fontSize: 11, color: '#8A95A8', marginBottom: 4 }}>
-                <span style={{ color: '#00D4AA' }}>After:</span> {g.after}
+              <div style={{ fontSize: 11, color: '#64748B', marginBottom: 4 }}>
+                <span style={{ color: '#059669' }}>After:</span> {g.after}
               </div>
-              <div style={{ fontSize: 10, color: '#4A5568' }}>{g.mechanism}</div>
+              <div style={{ fontSize: 10, color: '#94A3B8' }}>{g.mechanism}</div>
             </div>
           ))}
         </div>
@@ -257,7 +257,7 @@ export default function LiveDashboard() {
 
       {/* ── Row 4: SLA Monitor ── */}
       <div className="cg-card" style={{ marginBottom: 24 }}>
-        <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 14 }}>
+        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 14 }}>
           Performance SLA Monitor
         </div>
         <div style={{
@@ -266,7 +266,7 @@ export default function LiveDashboard() {
           gap: '6px 16px',
           fontSize: 13,
           marginBottom: 8,
-          color: '#4A5568',
+          color: '#94A3B8',
         }}>
           <span>Operation</span>
           <span style={{ textAlign: 'right' }}>P95 Target</span>
@@ -286,23 +286,23 @@ export default function LiveDashboard() {
                 alignItems: 'center',
                 padding: '9px 12px',
                 borderRadius: 8,
-                background: 'rgba(255,255,255,.03)',
-                border: '1px solid rgba(255,255,255,.06)',
+                background: '#F8FAFF',
+                border: '1px solid #E2E8F0',
                 marginBottom: 6,
                 fontSize: 13,
               }}
             >
-              <span style={{ color: '#E8EDF5' }}>{row.op}</span>
+              <span style={{ color: '#334155' }}>{row.op}</span>
               <span style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                color: '#8A95A8',
+                color: '#94A3B8',
                 textAlign: 'right',
               }}>
                 &lt;{row.target}ms
               </span>
               <span style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                color: actual !== undefined ? (pass ? '#00D4AA' : '#FF3B5C') : '#4A5568',
+                color: actual !== undefined ? (pass ? '#059669' : '#DC2626') : '#CBD5E1',
                 textAlign: 'right',
               }}>
                 {actual !== undefined ? `${actual}ms` : '—'}
@@ -311,7 +311,7 @@ export default function LiveDashboard() {
                 textAlign: 'center',
                 fontSize: 12,
                 fontWeight: 700,
-                color: actual !== undefined ? (pass ? '#00D4AA' : '#FF3B5C') : '#4A5568',
+                color: actual !== undefined ? (pass ? '#059669' : '#DC2626') : '#CBD5E1',
               }}>
                 {actual !== undefined ? (pass ? '✓ PASS' : '✗ FAIL') : '—'}
               </span>
@@ -326,18 +326,18 @@ export default function LiveDashboard() {
           alignItems: 'center',
           padding: '9px 12px',
           borderRadius: 8,
-          background: 'rgba(255,255,255,.03)',
-          border: '1px solid rgba(255,255,255,.06)',
+          background: '#F8FAFF',
+          border: '1px solid #E2E8F0',
           fontSize: 13,
         }}>
-          <span style={{ color: '#E8EDF5' }}>Blockchain TPS</span>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#8A95A8', textAlign: 'right' }}>
+          <span style={{ color: '#334155' }}>Blockchain TPS</span>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#94A3B8', textAlign: 'right' }}>
             5,000
           </span>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#00D4AA', textAlign: 'right' }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#059669', textAlign: 'right' }}>
             5,247
           </span>
-          <span style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#00D4AA' }}>
+          <span style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#059669' }}>
             ✓ PASS
           </span>
         </div>
@@ -345,7 +345,7 @@ export default function LiveDashboard() {
 
       {/* ── Row 5: GNN Math ── */}
       <div className="cg-card" style={{ marginBottom: 24 }}>
-        <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 14 }}>
+        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 14 }}>
           Graph Neural Network — Technical Architecture
         </div>
         <div className="math-block">
@@ -374,14 +374,14 @@ Central server aggregates weight updates ONLY — never raw transaction data.
 
       {/* ── Row 6: Competitor table ── */}
       <div className="cg-card" style={{ marginBottom: 24, overflowX: 'auto' }}>
-        <div style={{ fontWeight: 700, color: '#E8EDF5', fontSize: 15, marginBottom: 14 }}>
+        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: 15, marginBottom: 14 }}>
           FraudMesh (CipherGuard) vs Industry
         </div>
         <table className="comp-table">
           <thead>
             <tr>
               <th>Feature / Capability</th>
-              <th style={{ color: '#00D4AA' }}>CipherGuard</th>
+              <th style={{ color: '#1D4ED8' }}>CipherGuard</th>
               <th>Protectt.ai</th>
               <th>Bureau</th>
               <th>Paytm Pi</th>
@@ -391,12 +391,12 @@ Central server aggregates weight updates ONLY — never raw transaction data.
           <tbody>
             {COMPETITORS.map((row, i) => (
               <tr key={i}>
-                <td style={{ color: '#8A95A8', fontWeight: 500 }}>{row[0]}</td>
-                <td style={{ color: '#00D4AA', fontWeight: 600 }}>{row[1]}</td>
-                <td style={{ color: row[2].startsWith('❌') ? '#FF3B5C' : row[2].startsWith('⚠️') ? '#FF9F1C' : '#00D4AA' }}>{row[2]}</td>
-                <td style={{ color: row[3].startsWith('❌') ? '#FF3B5C' : row[3].startsWith('⚠️') ? '#FF9F1C' : '#00D4AA' }}>{row[3]}</td>
-                <td style={{ color: row[4].startsWith('❌') ? '#FF3B5C' : row[4].startsWith('⚠️') ? '#FF9F1C' : '#00D4AA' }}>{row[4]}</td>
-                <td style={{ color: row[5].startsWith('❌') ? '#FF3B5C' : row[5].startsWith('⚠️') ? '#FF9F1C' : '#00D4AA' }}>{row[5]}</td>
+                <td style={{ color: '#64748B', fontWeight: 500 }}>{row[0]}</td>
+                <td style={{ color: '#1D4ED8', fontWeight: 600 }}>{row[1]}</td>
+                <td style={{ color: row[2].startsWith('❌') ? '#DC2626' : row[2].startsWith('⚠️') ? '#D97706' : '#059669' }}>{row[2]}</td>
+                <td style={{ color: row[3].startsWith('❌') ? '#DC2626' : row[3].startsWith('⚠️') ? '#D97706' : '#059669' }}>{row[3]}</td>
+                <td style={{ color: row[4].startsWith('❌') ? '#DC2626' : row[4].startsWith('⚠️') ? '#D97706' : '#059669' }}>{row[4]}</td>
+                <td style={{ color: row[5].startsWith('❌') ? '#DC2626' : row[5].startsWith('⚠️') ? '#D97706' : '#059669' }}>{row[5]}</td>
               </tr>
             ))}
           </tbody>
@@ -424,7 +424,7 @@ Central server aggregates weight updates ONLY — never raw transaction data.
           },
         ].map(d => (
           <div key={d.name} className="cg-card-info">
-            <div style={{ fontWeight: 700, color: '#4A9EFF', fontSize: 14, marginBottom: 12 }}>
+            <div style={{ fontWeight: 700, color: '#2563EB', fontSize: 14, marginBottom: 12 }}>
               📦 {d.name}
             </div>
             {[
@@ -434,19 +434,19 @@ Central server aggregates weight updates ONLY — never raw transaction data.
               ['Used for',   d.use],
             ].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', gap: 8, marginBottom: 6, fontSize: 12 }}>
-                <span style={{ color: '#8A95A8', flexShrink: 0, minWidth: 64 }}>{k}:</span>
-                <span style={{ color: '#E8EDF5' }}>{v}</span>
+                <span style={{ color: '#94A3B8', flexShrink: 0, minWidth: 64 }}>{k}:</span>
+                <span style={{ color: '#334155' }}>{v}</span>
               </div>
             ))}
             <div style={{
               marginTop: 10,
               fontFamily: "'JetBrains Mono', monospace",
               fontSize: 11,
-              color: '#00D4AA',
-              background: 'rgba(0,0,0,.3)',
+              color: '#1D4ED8',
+              background: '#EFF6FF',
               padding: '6px 10px',
               borderRadius: 6,
-              border: '1px solid rgba(255,255,255,.06)',
+              border: '1px solid #BFDBFE',
             }}>
               {d.cmd}
             </div>

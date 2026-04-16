@@ -16,14 +16,14 @@ export default function HelpPanel() {
           width: 48,
           height: 48,
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #00D4AA, #00B88F)',
-          color: '#0A0E1A',
+          background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+          color: '#FFFFFF',
           border: 'none',
           cursor: 'pointer',
           fontSize: 20,
           fontWeight: 900,
           zIndex: 80,
-          boxShadow: '0 4px 20px rgba(0,212,170,0.4)',
+          boxShadow: '0 4px 20px rgba(37,99,235,.4)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -44,14 +44,14 @@ export default function HelpPanel() {
           {/* Panel */}
           <div className="help-panel">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <div style={{ fontWeight: 800, fontSize: 18, color: '#E8EDF5' }}>Demo Guide</div>
+              <div style={{ fontWeight: 800, fontSize: 18, color: '#0F172A' }}>Demo Guide</div>
               <button
                 onClick={() => setOpen(false)}
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.12)',
+                  background: '#F1F5F9',
+                  border: '1px solid #E2E8F0',
                   borderRadius: 8,
-                  color: '#8A95A8',
+                  color: '#64748B',
                   padding: '4px 12px',
                   cursor: 'pointer',
                   fontSize: 14,
@@ -66,7 +66,7 @@ export default function HelpPanel() {
               <Code>2. npm install</Code>
               <Code>3. npm run dev</Code>
               <Code>4. Open http://localhost:3000</Code>
-              <p style={{ color: '#8A95A8', fontSize: 12, marginTop: 8 }}>
+              <p style={{ color: '#64748B', fontSize: 12, marginTop: 8 }}>
                 All functionality works offline — no backend required.
               </p>
             </Section>
@@ -87,7 +87,7 @@ export default function HelpPanel() {
             <Section title="DATASETS">
               <Code>PaySim:   kaggle datasets download -d ealaxi/paysim1</Code>
               <Code>IEEE-CIS: kaggle competitions download -c ieee-fraud-detection</Code>
-              <p style={{ color: '#8A95A8', fontSize: 12, marginTop: 8 }}>
+              <p style={{ color: '#64748B', fontSize: 12, marginTop: 8 }}>
                 Place in /data/ folder relative to backend
               </p>
             </Section>
@@ -102,8 +102,8 @@ export default function HelpPanel() {
                 ['vs Bureau?', 'Bureau has no telecom CDR signals. We have bilateral MNO agreements.'],
               ].map(([q, a]) => (
                 <div key={q} style={{ marginBottom: 10 }}>
-                  <div style={{ color: '#00D4AA', fontSize: 12, fontWeight: 600, marginBottom: 3 }}>{q}</div>
-                  <div style={{ color: '#E8EDF5', fontSize: 12 }}>→ {a}</div>
+                  <div style={{ color: '#1D4ED8', fontSize: 12, fontWeight: 600, marginBottom: 3 }}>{q}</div>
+                  <div style={{ color: '#334155', fontSize: 12 }}>→ {a}</div>
                 </div>
               ))}
             </Section>
@@ -117,8 +117,8 @@ export default function HelpPanel() {
                 'L5 — ML Ensemble (LightGBM + LSTM + GNN + Isolation Forest)',
                 'L6 — Composite Decision Engine (APPROVE / STEP-UP / BLOCK)',
               ].map(l => (
-                <div key={l} style={{ color: '#8A95A8', fontSize: 12, marginBottom: 6 }}>
-                  <span style={{ color: '#4A9EFF' }}>›</span> {l}
+                <div key={l} style={{ color: '#64748B', fontSize: 12, marginBottom: 6 }}>
+                  <span style={{ color: '#2563EB' }}>›</span> {l}
                 </div>
               ))}
             </Section>
@@ -126,14 +126,14 @@ export default function HelpPanel() {
             <div style={{
               marginTop: 16,
               padding: '12px 16px',
-              background: 'rgba(0,212,170,0.06)',
-              border: '1px solid rgba(0,212,170,0.15)',
+              background: '#EFF6FF',
+              border: '1px solid #BFDBFE',
               borderRadius: 8,
               fontSize: 12,
-              color: '#8A95A8',
+              color: '#475569',
             }}>
-              <span style={{ color: '#00D4AA', fontWeight: 700 }}>Key stat:</span> 13B+ monthly UPI transactions.
-              4–120 minute current detection lag → <span style={{ color: '#00D4AA' }}>&lt;80ms with CipherGuard</span>.
+              <span style={{ color: '#1D4ED8', fontWeight: 700 }}>Key stat:</span> 13B+ monthly UPI transactions.
+              4–120 minute current detection lag → <span style={{ color: '#2563EB' }}>&lt;80ms with CipherGuard</span>.
             </div>
           </div>
         </>
@@ -149,10 +149,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: 11,
         fontWeight: 700,
-        color: '#4A9EFF',
+        color: '#2563EB',
         letterSpacing: '0.1em',
         marginBottom: 10,
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        borderBottom: '1px solid #E2E8F0',
         paddingBottom: 6,
       }}>
         {title}
@@ -167,9 +167,9 @@ function Code({ children }: { children: React.ReactNode }) {
     <div style={{
       fontFamily: "'JetBrains Mono', monospace",
       fontSize: 11,
-      color: '#00D4AA',
-      background: 'rgba(0,0,0,0.3)',
-      border: '1px solid rgba(255,255,255,0.06)',
+      color: '#1D4ED8',
+      background: '#EFF6FF',
+      border: '1px solid #BFDBFE',
       borderRadius: 4,
       padding: '5px 10px',
       marginBottom: 4,
