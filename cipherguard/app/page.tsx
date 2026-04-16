@@ -1,9 +1,9 @@
-import Dashboard from './components/Dashboard';
+import AppRoot from './components/AppRoot';
 
 export default function Home() {
   return (
     <main>
-      <Dashboard />
+      <AppRoot />
     </main>
   );
 }

@@ -957,7 +957,7 @@ export default function PipelineVisualization({
           <span style={{ fontSize:16 }}>⚡</span>
           <span>FAST PATH at {data.fastPathAt.toUpperCase()}: {data.fastPathReason}</span>
           <span style={{ marginLeft:'auto', color:'#94A3B8', fontWeight:400 }}>
-            L4, L5{data.fastPathAt==='l3'?' ':', L4, L5 '} ML queue bypassed → direct to BLOCK
+            {data.fastPathAt==='l2' ? 'L3, L4, L5' : 'L4, L5'} ML queue bypassed → direct to BLOCK
           </span>
         </div>
       )}
